@@ -72,6 +72,8 @@
 #endif
 /* gettimeofday() and sys/time.h					*/
 #undef HAVE_GETTIMEOFDAY
+/* clock_gettime()							*/
+#undef HAVE_CLOCK_GETTIME
 /* getrusage() and sys/resource.h					*/
 #ifndef NACL
 #undef HAVE_GETRUSAGE
@@ -129,8 +131,10 @@
 #undef HAVE_SCHED_YIELD
 /* whether we have a working sem_init()                                 */
 #undef HAVE_SEM_INIT
-/* whether we have read/write locks                                     */
-#undef HAVE_POSIX_RWLOCK
+/* whether we have mutex lock operations with timeout                   */
+#undef HAVE_PTHREAD_MUTEX_TIMEDLOCK
+/* whether we can set the clock for timed waits on condition variables  */
+#undef HAVE_PTHREAD_CONDATTR_SETCLOCK
 /* uname() for system identification                                    */
 #undef HAVE_UNAME
 #undef HAVE_UNISTD_H
@@ -194,12 +198,12 @@
 #  define PATH_SEPARATOR        ':'
 #endif
 
-#define ECL_ARCHITECTURE "X86_64"
+#define ECL_ARCHITECTURE "AARCH64"
 
 #ifdef ECL_AVOID_FPE_H
 # define ecl_detect_fpe()
 #else
-# include "arch/fpe_x86.c"
+# include "arch/fpe_none.c"
 #endif
 
 #ifdef ECL_INCLUDE_MATH_H
@@ -247,4 +251,13 @@
 #define ECL_DEFAULT_C_STACK_SIZE 0 /* Use the stack size provided by the OS */
 #else
 #define ECL_DEFAULT_C_STACK_SIZE 1048576
+#endif
+
+/* Do the fixed and optional arguments of a variadic function use a
+ * different calling convention?
+ * Hardcoded since there's no easy way to determine this from a
+ * configure check and currently ARM64 apple is the only platform
+ * known to do this. */
+#if defined(__APPLE__) && (defined(__arm64__) || defined(__aarch64__))
+#define ECL_C_COMPATIBLE_VARIADIC_DISPATCH
 #endif

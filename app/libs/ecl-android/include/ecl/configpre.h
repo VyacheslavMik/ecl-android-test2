@@ -2,19 +2,14 @@
 /* vim: set filetype=c tabstop=8 shiftwidth=4 expandtab: */
 
 /*
-    config.h.in -- Template configuration file.
-*/
-/*
-    Copyright (c) 1990, Giuseppe Attardi.
-    Copyright (c) 2001, Juan Jose Garcia Ripoll.
+ * Copyright (c) 1990, Giuseppe Attardi.
+ * Copyright (c) 2001, Juan Jose Garcia Ripoll.
+ *
+ * See file 'LICENSE' for the copyright details.
+ *
+ */
 
-    ECoLisp is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    See file '../Copyright' for full details.
-*/
+/* config.h.in -- Template configuration file. */
 
 #if defined(_MSC_VER) || defined(__MINGW32__) || __WIN32__ || __WIN64__
 #define ECL_MS_WINDOWS_HOST
@@ -47,7 +42,7 @@
 #endif
 
 /* Decimal number made with the formula yymmvv */
-#define ECL_VERSION_NUMBER 200424
+#define ECL_VERSION_NUMBER 240510
 
 /*
  * FEATURES LINKED IN
@@ -88,8 +83,8 @@
 #undef ECL_LIBATOMIC_OPS_H
 
 /* Network streams                                                      */
-#undef TCP
-#if defined(TCP) && defined(ECL_MS_WINDOWS_HOST)
+#undef ECL_TCP
+#if defined(ECL_TCP) && defined(ECL_MS_WINDOWS_HOST)
 # define ECL_WSOCK
 #endif
 
@@ -231,6 +226,12 @@ typedef unsigned char ecl_base_char;
 
 /* feenableexcept is available */
 #undef HAVE_FEENABLEEXCEPT
+
+/* wide-strings are available */
+#undef HAVE_WCHAR_H
+
+/* whether we have read/write locks                                     */
+#undef HAVE_POSIX_RWLOCK
 
 /*
  * C macros for inlining, denoting probable code paths and other stuff

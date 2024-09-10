@@ -2,19 +2,13 @@
 /* vim: set filetype=c tabstop=8 shiftwidth=4 expandtab: */
 
 /*
-    math_fenv.h -- inlined versions of fenv.h
-*/
-/*
-    Copyright (c) 2010, Juan Jose Garcia Ripoll.
+ * Copyright (c) 2010, Juan Jose Garcia Ripoll.
+ *
+ * See file 'LICENSE' for the copyright details.
+ *
+ */
 
-    ECL is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    See file '../../Copyright' for full details.
-*/
-
+/* math_fenv.h -- inlined versions of fenv.h */
 #ifndef ECL_MATH_FENV_H
 #define ECL_MATH_FENV_H
 
@@ -55,6 +49,21 @@
 #ifdef HAVE_FENV_H
 # define ECL_WITHOUT_FPE_BEGIN do { fenv_t env; feholdexcept(&env);
 # define ECL_WITHOUT_FPE_END        fesetenv(&env); } while (0)
+# if !defined(FE_DIVBYZERO)
+#  define FE_DIVBYZERO 0
+# endif
+# if !defined(FE_INVALID)
+#  define FE_INVALID 0
+# endif
+# if !defined(FE_OVERFLOW)
+#  define FE_OVERFLOW 0
+# endif
+# if !defined(FE_UNDERFLOW)
+#  define FE_UNDERFLOW 0
+# endif
+# if !defined(FE_INEXACT)
+#  define FE_INEXACT 0
+# endif
 #else
 # define FE_INVALID 1
 # define FE_DIVBYZERO 2
@@ -72,16 +81,15 @@
 
 #if defined(HAVE_FENV_H) && !defined(ECL_AVOID_FPE_H)
 # if defined(HAVE_FEENABLEEXCEPT)
-#  define ECL_WITH_LISP_FPE_BEGIN do {                   \
-        fenv_t __fenv;                                   \
-        fegetenv(&__fenv);                               \
-        cl_env_ptr __the_env = ecl_process_env_unsafe(); \
-        if (__the_env) {                                 \
-                int bits = __the_env->trap_fpe_bits;     \
-                fedisableexcept(FE_ALL_EXCEPT & ~bits);  \
-                feenableexcept(FE_ALL_EXCEPT & bits);    \
-        }                                                \
-        feclearexcept(FE_ALL_EXCEPT);
+#  define ECL_WITH_LISP_FPE_BEGIN do {                       \
+        fenv_t __fenv;                                       \
+        fegetenv(&__fenv);                                   \
+        feclearexcept(FE_ALL_EXCEPT);                        \
+        if (ecl_get_option(ECL_OPT_BOOTED) > 0) {            \
+                int bits = ecl_process_env()->trap_fpe_bits; \
+                fedisableexcept(FE_ALL_EXCEPT & ~bits);      \
+                feenableexcept(FE_ALL_EXCEPT & bits);        \
+        }
 # else
 #  define ECL_WITH_LISP_FPE_BEGIN do {                   \
         fenv_t __fenv;                                   \

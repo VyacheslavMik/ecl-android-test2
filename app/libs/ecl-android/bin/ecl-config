@@ -32,9 +32,9 @@ for i in $*; do
 done
 
 if test "$echo_cflags" = "yes"; then
-  echo "-Dandroid   -I/Users/vyacheslavmikushev/Work/ecl/ecl-android/include"
+  echo "-Dandroid   -I/home/kosbar/Projects/ecl/ecl-android/include"
 fi
 
 if test "$echo_ldflags" = "yes"; then
-  echo "-Wl,--rpath,/Users/vyacheslavmikushev/Work/ecl/ecl-android/lib -L/Users/vyacheslavmikushev/Work/ecl/ecl-android/lib $LDFLAGS --sysroot=/Users/vyacheslavmikushev/Work/ecl/android-toolchain/sysroot -D__ANDROID_API__=29 -fuse-ld=bfd     -ldl -lm  "
+  echo "-Wl,--rpath,/home/kosbar/Projects/ecl/ecl-android/lib -L/home/kosbar/Projects/ecl/ecl-android/lib $LDFLAGS --sysroot=/home/kosbar/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -D__ANDROID_API__=23     -ldl -lm  "
 fi

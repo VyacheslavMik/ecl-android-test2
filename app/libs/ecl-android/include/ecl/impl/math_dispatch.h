@@ -2,19 +2,13 @@
 /* vim: set filetype=c tabstop=8 shiftwidth=4 expandtab: */
 
 /*
-    math_dispatch.h -- fast dispatch for math functions
-*/
-/*
-    Copyright (c) 2010, Juan Jose Garcia Ripoll.
+ * Copyright (c) 2010, Juan Jose Garcia Ripoll.
+ *
+ * See file 'LICENSE' for the copyright details.
+ *
+ */
 
-    ECL is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    See file '../Copyright' for full details.
-*/
-
+/* math_dispatch.h -- fast dispatch for math functions */
 #ifndef ECL_MATH_DISPATCH_H
 #define ECL_MATH_DISPATCH_H
 
@@ -54,6 +48,7 @@ typedef cl_object (*math_one_arg_fn)(cl_object);
         }                                                               \
         return name##dispatch[t](arg);                                  \
     }
+
 #define MATH_DEF_DISPATCH1(name,id,type,fix,big,ratio,                  \
                            single_float,double_float,long_float,        \
                            complex,csfloat,cdfloat,clfloat)             \
